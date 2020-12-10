@@ -5,12 +5,30 @@ var submitbutton=document.getElementById("submitbutton");
 submitbutton.addEventListener("click",function(){
     var existing =submitbutton.getAttribute("style")
     submitbutton.setAttribute("style",existing+"outline: none;box-shadow: none;");
+    postComment()
 });
 
 commentform.addEventListener("submit",function(event){
     event.preventDefault();
     getComments();
 })
+
+function postComment(){
+    var commentobject="";
+    commentobject={
+        Name:"Test",
+        Message:"PUSH ME",
+        Email:"enen@gmail.com"
+    }
+    axios.post('https://contactmeinfosapi.herokuapp.com/contactme/comments', commentobject)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+}
+
 function getComments() {
     console.log(submitbutton)
     // Make a request for a user with a given ID
