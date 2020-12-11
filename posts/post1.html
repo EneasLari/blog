@@ -138,48 +138,45 @@
 
   <hr>
 
-  <div class="container">
-    <div class="row">
+  <div class="container" id="commentsContainer">
+    <!-- <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
         <form id="commentform">
           <div class="form-group">
+            <label for="name">Name:</label>
+            <input class="form-control" type="text" id="name" name="Name">
             <label for="comment">Comment:</label>
-            <textarea class="form-control" rows="5" id="comment"></textarea>
-    
+            <textarea class="form-control" rows="5" id="comment" name="Message"></textarea>
+            <div id="alertElementParent" style="margin-top: 20px;"></div>
           </div>
           <div style="text-align:right">
             <button class="btn btn-success" type="submit" id="submitbutton"
               style="text-transform: capitalize;border-radius: 5%;padding: 10px 20px;">Share</button>
           </div>
-          
+
         </form>
       </div>
 
-    </div>
+    </div> -->
 
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
         <h4>Comments</h4>
-        <div id="getcomments">
-          <!-- <div class="card">
-            <div class="card-header">
-              <h5 style="margin-bottom: 0px;">Name</h5>
-            </div>
-            <div class="card-body">
-              <p style="margin-bottom: 0px;margin-top: 0px;font-size: 18px;padding-left: 20px;">Lorem ipsum dolor sit
-                amet, consectetur
-                adipiscing elit. Integer posuere erat a ante.</p>
-            </div>
-          </div> -->
+        <div style="text-align: center;">
+          <button type="button" class="btn btn-light btn-block" id="loadcomments" style="margin-bottom: 20px;">Load Comments</button>
         </div>
-      </div>
+
+
+        <div id="getcomments">
+        </div>
+      </div> -->
 
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script src="../js/commentsection.js">
-      
+
     </script>
 
 
