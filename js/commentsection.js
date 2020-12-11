@@ -124,7 +124,6 @@ function postComment() {
 }
 
 function getComments() {
-    console.log("WHATATATATATAT")
     // Make a request for a user with a given ID
     commentssection.innerHTML = "";
     axios.get('https://articlecommentsapi.herokuapp.com/comments', {
@@ -134,7 +133,6 @@ function getComments() {
         })
         .then(function (response) {
             // handle success
-            console.log("HANDLE SUCCESS")
             var i;
             for (i = response.data.length - 1; i >= 0; i--) {
                 if (alreadyloadedcomments.length == 0) {
