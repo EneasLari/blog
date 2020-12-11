@@ -28,7 +28,7 @@ function Initialize() {
             event.preventDefault();
             var existing = submitbutton.getAttribute("style")
             submitbutton.setAttribute("style", existing + "outline: none;box-shadow: none;");
-            postComment()
+            postComment2()
         });
     
         loadcommentsbutton.addEventListener("click", function () {
@@ -90,6 +90,23 @@ function createBootstrapCard(name, message) {
     carddiv.appendChild(cardbodydiv);
     return carddiv;
 }
+
+function postComment2(){
+    var commentobject="";
+    commentobject={
+        Name:"Test",
+        Message:"PUSH ME",
+        Email:"enen@gmail.com"
+    }
+    axios.post('https://contactmeinfosapi.herokuapp.com/contactme/comments', commentobject)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+}
+
 
 
 function postComment() {
