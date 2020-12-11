@@ -46,12 +46,12 @@ function Initialize() {
     </div> */
 }
 
-function createBootstrapAlert(message) {
+function createBootstrapAlert(comment) {
     var alertdiv = document.createElement('div');
     alertdiv.classList.add("alert");
     alertdiv.classList.add("alert-danger");
     alertdiv.setAttribute("role", "alert");
-    alertdiv.innerHTML = message;
+    alertdiv.innerHTML = comment;
     return alertdiv;
 }
 
@@ -94,24 +94,23 @@ function createBootstrapCard(name, message) {
 function postComment() {
     var commentobject = "";
     //get element like in the css
-    var MessageValue = commentform.querySelector("textarea[name=Message]").value
+    var CommentValue = commentform.querySelector("textarea[name=Comment]").value
     var NameValue = commentform.querySelector("input[name=Name]").value
     var alertelement = document.getElementById("alertElementParent")
     alertelement.innerHTML = null;
-    if (MessageValue == "" || MessageValue == null) {
-        alertelement.appendChild(createBootstrapAlert("Please fill e message"))
+    if (CommentValue == "" || CommentValue == null) {
+        alertelement.appendChild(createBootstrapAlert("Please fill a Comment"))
         return;
     }
 
     commentobject = {
         Name: NameValue,
-        Message: MessageValue,
-        Email: "enen@gmail.com"
+        Comment: CommentValue
     }
-    commentform.querySelector("textarea[name=Message]").value = "";
-    axios.post('https://contactmeinfosapi.herokuapp.com/contactme/comments', commentobject)
+    commentform.querySelector("textarea[name=Comment]").value = "";
+    axios.post('https://articlecommentsapi.herokuapp.com/comments', commentobject)
         .then(function (response) {
-            commentssection.prepend(createBootstrapCard(NameValue, MessageValue));
+            commentssection.prepend(createBootstrapCard(NameValue, CommentValue));
             //console.log(response);
         })
         .catch(function (error) {
@@ -123,14 +122,14 @@ function getComments() {
     //console.log(submitbutton)
     // Make a request for a user with a given ID
     commentssection.innerHTML = "";
-    axios.get('https://contactmeinfosapi.herokuapp.com/contactme/comments')
+    axios.get('https://articlecommentsapi.herokuapp.com/comments')
         .then(function (response) {
             // handle success
             var i;
             for (i = response.data.length-1; i >= 0; i--) {               
                 if(alreadyloadedcomments.length==0){
                     alreadyloadedcomments.push(response.data[i]._id)
-                    commentssection.appendChild(createBootstrapCard(response.data[i].Name, response.data[i].Message));
+                    commentssection.appendChild(createBootstrapCard(response.data[i].Name, response.data[i].Comment));
                 }else{
                     var j=0;
                     var found=false;
@@ -140,7 +139,7 @@ function getComments() {
                         }
                     }
                     if(!found){
-                        commentssection.appendChild(createBootstrapCard(response.data[i].Name, response.data[i].Message));
+                        commentssection.appendChild(createBootstrapCard(response.data[i].Name, response.data[i].Comment));
                         alreadyloadedcomments.push(response.data[i]._id)
                     }
                 }
