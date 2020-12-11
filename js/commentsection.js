@@ -1,5 +1,9 @@
 var commentssection = "";
-var alreadyloadedcomments=[];
+var alreadyloadedcomments = [];
+
+
+var articleID = document.getElementById("ArticleId").innerHTML.trim();
+console.log(articleID)
 
 window.onload = function () {
     axios.get('commentsectionrow.html')
@@ -13,7 +17,7 @@ window.onload = function () {
             console.log(error);
         })
         .then(function () {
-            Initialize(); 
+            Initialize();
         });
 }
 
@@ -23,14 +27,14 @@ function Initialize() {
     var commentform = document.getElementById("commentform");
     var loadcommentsbutton = document.getElementById("loadcomments");
     commentssection = document.getElementById("getcomments");
-    if(commentform!=undefined && loadcommentsbutton!=undefined && commentssection!=undefined){
+    if (commentform != undefined && loadcommentsbutton != undefined && commentssection != undefined) {
         commentform.addEventListener("submit", function (event) {
             event.preventDefault();
             var existing = submitbutton.getAttribute("style")
             submitbutton.setAttribute("style", existing + "outline: none;box-shadow: none;");
             postComment()
         });
-    
+
         loadcommentsbutton.addEventListener("click", function () {
             getComments();
             loadcommentsbutton.remove();
@@ -105,7 +109,8 @@ function postComment() {
 
     commentobject = {
         Name: NameValue,
-        Comment: CommentValue
+        Comment: CommentValue,
+        ArticleId: articleID
     }
     commentform.querySelector("textarea[name=Comment]").value = "";
     axios.post('https://articlecommentsapi.herokuapp.com/comments', commentobject)
@@ -122,28 +127,32 @@ function getComments() {
     //console.log(submitbutton)
     // Make a request for a user with a given ID
     commentssection.innerHTML = "";
-    axios.get('https://articlecommentsapi.herokuapp.com/comments')
+    axios.get('https://articlecommentsapi.herokuapp.com/comments', {
+            params: {
+                ArticleId: articleID
+            }
+        })
         .then(function (response) {
             // handle success
             var i;
-            for (i = response.data.length-1; i >= 0; i--) {               
-                if(alreadyloadedcomments.length==0){
+            for (i = response.data.length - 1; i >= 0; i--) {
+                if (alreadyloadedcomments.length == 0) {
                     alreadyloadedcomments.push(response.data[i]._id)
                     commentssection.appendChild(createBootstrapCard(response.data[i].Name, response.data[i].Comment));
-                }else{
-                    var j=0;
-                    var found=false;
+                } else {
+                    var j = 0;
+                    var found = false;
                     for (j = 0; j < alreadyloadedcomments.length; j++) {
-                        if(response.data[i]._id==alreadyloadedcomments[j]){
-                            found=true;
+                        if (response.data[i]._id == alreadyloadedcomments[j]) {
+                            found = true;
                         }
                     }
-                    if(!found){
+                    if (!found) {
                         commentssection.appendChild(createBootstrapCard(response.data[i].Name, response.data[i].Comment));
                         alreadyloadedcomments.push(response.data[i]._id)
                     }
                 }
-                
+
             }
         })
         .catch(function (error) {
