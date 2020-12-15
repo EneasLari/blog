@@ -408,3 +408,11 @@ footer .copyright {
   padding: 25px 35px;
 }
 /*Eneas css rules  */
+.logo-image{
+  height: 200px;width: 100%; overflow: hidden;
+}
+
+.card-text{
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
