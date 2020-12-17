@@ -106,11 +106,12 @@ function postComment() {
         alertelement.appendChild(createBootstrapAlert("Please fill a Comment"))
         return;
     }
-
+    var articlename=document.getElementsByTagName("title")[0].innerText
     commentobject = {
         Name: NameValue,
         Comment: CommentValue,
-        ArticleId: articleID
+        ArticleId: articleID,
+        ArticleName:articlename
     }
     commentform.querySelector("textarea[name=Comment]").value = "";
     axios.post('https://articlecommentsapi.herokuapp.com/comments', commentobject)
