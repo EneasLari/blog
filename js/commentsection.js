@@ -1,6 +1,6 @@
 var commentssection = "";
 var alreadyloadedcomments = [];
-
+var respondButton = "";
 
 var articleID = document.getElementById("ArticleId").innerHTML.trim();
 console.log(articleID)
@@ -32,7 +32,7 @@ function Initialize() {
             event.preventDefault();
             var existing = submitbutton.getAttribute("style")
             submitbutton.setAttribute("style", existing + "outline: none;box-shadow: none;");
-            postComment()
+            postComment(commentform)
         });
 
         loadcommentsbutton.addEventListener("click", function () {
@@ -68,6 +68,20 @@ function createBootstrapAlert(comment) {
       <p style="margin-bottom: 0px;margin-top: 0px;font-size: 18px;padding-left: 20px;"></p>
     </div>
     </div> */
+
+    //     <div class="card">
+    //     <div class="card-header">
+    //       <h5 style="margin-bottom: 0px;">Name</h5>
+    //     </div>
+    //     <div class="card-body">
+    //       <p style="margin-bottom: 0px;margin-top: 0px;font-size: 18px;padding-left: 20px;">
+    //       </p>
+    //   <div class='text-center'>
+    //     <button type='button' class='btn btn-success btn-sm'
+    //       style='margin-top: 20px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>Respond</button>
+    //   </div>
+    //     </div>
+    //   </div>
 }
 
 function createBootstrapCard(name, message) {
@@ -82,6 +96,11 @@ function createBootstrapCard(name, message) {
     cardheaderdiv.appendChild(h5)
     h5.innerHTML = name; // response.data[i].Name;
 
+    var responsstring = "<div style='text-align:right'>" + "<button type='button' class='btn btn-success btn-light btn-sm respondbutton'" +
+        "style='margin-top: 20px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>" +
+        "Respond</button></div>" + "<div  id='commentresponse' ></div> ";
+    var responseelement = document.createElement("div")
+    responseelement.innerHTML = responsstring;
     var cardbodydiv = document.createElement('div');
     cardbodydiv.classList.add("card-body");
 
@@ -90,33 +109,56 @@ function createBootstrapCard(name, message) {
     paragraph.innerHTML = message; // response.data[i].Message;
 
     cardbodydiv.appendChild(paragraph);
+    cardbodydiv.appendChild(responseelement)
     carddiv.appendChild(cardheaderdiv);
     carddiv.appendChild(cardbodydiv);
+    respondButton = carddiv.querySelector("button")
+    respondButton.addEventListener("click", RespondToMessage)
+    console.log(respondButton)
     return carddiv;
 }
 
-function postComment() {
+function RespondToMessage(){
+    var commentFForm=document.getElementById("commentform").cloneNode(true);
+    document.getElementById("commentresponse").appendChild(commentFForm)
+    commentFForm.id="responseid"
+    commentFForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        console.log("FORM POSTED")
+        // var existing = submitbutton.getAttribute("style")
+        //submitbutton.setAttribute("style", existing + "outline: none;box-shadow: none;");
+        postComment(commentFForm)
+    });
+    //here i must make the post of comment(postComment) and then delete the form
+}
+
+function postComment(form) {
     var commentobject = "";
     //get element like in the css
-    var CommentValue = commentform.querySelector("textarea[name=Comment]").value
-    var NameValue = commentform.querySelector("input[name=Name]").value
+    var CommentValue = form.querySelector("textarea[name=Comment]").value
+    var NameValue = form.querySelector("input[name=Name]").value
     var alertelement = document.getElementById("alertElementParent")
     alertelement.innerHTML = null;
     if (CommentValue == "" || CommentValue == null) {
         alertelement.appendChild(createBootstrapAlert("Please fill a Comment"))
         return;
     }
-    var articlename=document.getElementsByTagName("title")[0].innerText
+    var articlename = document.getElementsByTagName("title")[0].innerText
     commentobject = {
         Name: NameValue,
         Comment: CommentValue,
         ArticleId: articleID,
-        ArticleName:articlename
+        ArticleName: articlename
     }
-    commentform.querySelector("textarea[name=Comment]").value = "";
+    form.querySelector("textarea[name=Comment]").value = "";
     axios.post('https://articlecommentsapi.herokuapp.com/comments', commentobject)
         .then(function (response) {
-            commentssection.prepend(createBootstrapCard(NameValue, CommentValue));
+            if(document.getElementById("responseid") && document.getElementById("responseid").parentElement.id=="commentresponse"){
+                document.getElementById("responseid").parentElement.prepend(createBootstrapCard(NameValue, CommentValue))
+                form.remove();
+            }else{
+                commentssection.prepend(createBootstrapCard(NameValue, CommentValue));
+            }
             //console.log(response);
         })
         .catch(function (error) {
