@@ -69,8 +69,7 @@ bootstrapCardStr =
     "  <p title='Comment' style='margin-bottom: 0px;margin-top: 0px;font-size: 18px;padding-left: 20px;'>" +
     "  </p>" +
     "  <div style='text-align:right'>" +
-    "    <button type='button' class='btn btn-success btn-light btn-sm '" +
-    "      style='padding-bottom:0px;margin-bottom: 0px;margin-top: 10px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>Reply...</button>" +
+    "    <button type='button' id='btn-reply' class='btn btn-success btn-light btn-sm '>Reply...</button>" +
     "  </div>" +
     "</div>" +
     "</div>" +

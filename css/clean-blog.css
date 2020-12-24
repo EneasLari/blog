@@ -425,7 +425,7 @@ footer .copyright {
   border-color: #00657b !important;
 }
 
-.btn-lg .custom{
+.btn-lg .custom {
   font-size: 16px;
   padding: 25px 35px;
 }
@@ -450,4 +450,9 @@ footer .copyright {
   border-left-style: solid;
   border-left-width: 1.5px;
   border-left-style: dotted;
+}
+
+#btn-reply {
+  margin-top: 10px;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
