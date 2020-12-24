@@ -70,7 +70,7 @@ bootstrapCardStr =
     "  </p>" +
     "  <div style='text-align:right'>" +
     "    <button type='button' class='btn btn-success btn-light btn-sm '" +
-    "      style='padding-bottom:0px;margin-bottom: 0px;margin-top: 10px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>Respond...</button>" +
+    "      style='padding-bottom:0px;margin-bottom: 0px;margin-top: 10px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>Reply...</button>" +
     "  </div>" +
     "</div>" +
     "</div>" +
