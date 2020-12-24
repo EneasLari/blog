@@ -3,7 +3,6 @@ var alreadyloadedcomments = [];
 
 
 var articleID = document.getElementById("ArticleId").innerHTML.trim();
-console.log(articleID)
 
 window.onload = function () {
     axios.get('commentsectionrow.html')
@@ -32,7 +31,7 @@ function Initialize() {
             event.preventDefault();
             var existing = submitbutton.getAttribute("style")
             submitbutton.setAttribute("style", existing + "outline: none;box-shadow: none;");
-            postComment(commentform)
+            postComment(commentform, null, false)
         });
 
         loadcommentsbutton.addEventListener("click", function () {
@@ -48,40 +47,15 @@ function Initialize() {
     /* <div class="alert alert-danger" role="alert">
       This is a danger alert—check it out!
     </div> */
+    var bootstrapAlertstr = "<div class='alert alert-danger' role='alert'></div>";
+
 }
 
 function createBootstrapAlert(comment) {
-    var alertdiv = document.createElement('div');
-    alertdiv.classList.add("alert");
-    alertdiv.classList.add("alert-danger");
-    alertdiv.setAttribute("role", "alert");
-    alertdiv.innerHTML = comment;
-    return alertdiv;
-}
-
-{
-    /* <div class="card">
-    <div class="card-header">
-      <h5 style="margin-bottom: 0px;">Name</h5>
-    </div>
-    <div class="card-body">
-      <p style="margin-bottom: 0px;margin-top: 0px;font-size: 18px;padding-left: 20px;"></p>
-    </div>
-    </div> */
-
-    //     <div class="card">
-    //     <div class="card-header">
-    //       <h5 style="margin-bottom: 0px;">Name</h5>
-    //     </div>
-    //     <div class="card-body">
-    //       <p style="margin-bottom: 0px;margin-top: 0px;font-size: 18px;padding-left: 20px;">
-    //       </p>
-    //   <div class='text-center'>
-    //     <button type='button' class='btn btn-success btn-sm'
-    //       style='margin-top: 20px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>Respond</button>
-    //   </div>
-    //     </div>
-    //   </div>
+    var div = document.createElement('div');
+    div.innerHTML=bootstrapAlertstr;
+    div.children[0].innerHTML = comment;
+    return div;
 }
 
 bootstrapCardStr =
@@ -120,32 +94,36 @@ function createBootstrapCard(Id, parentId, name, message) {
 
     var respondButton = carddiv.querySelector("button")
     respondButton.addEventListener("click", function () {
-        RespondToMessage(carddiv);
-        respondButton.remove()
+        console.log(carddiv)
+        RespondToMessage(carddiv,respondButton);
+        respondButton.style.visibility="hidden";
     })
     return carddiv;
 }
 
-function RespondToMessage(card) {
+function RespondToMessage(card,button) {
     //take a clone of general post comment form
     var commentFForm = document.getElementById("commentform").cloneNode(true);
-    commentform.id=card.querySelector("[title=Id]").id;
+    console.log(commentFForm.id)
+    commentFForm.id = card.querySelector("[title=Id]").id;
     console.log(commentFForm.id)
     //get the div where the post comment will be rendered
-    card.querySelector(".commentresponse").appendChild(commentFForm)
+    var responsearea=card.querySelector(".commentresponse")
+    responsearea.prepend(commentFForm)
 
     commentFForm.addEventListener("submit", function (event) {
         event.preventDefault();
 
         // var existing = submitbutton.getAttribute("style")
         //submitbutton.setAttribute("style", existing + "outline: none;box-shadow: none;");
-        postComment(commentFForm, card.querySelector(".commentresponse"))
+        postComment(commentFForm, card.querySelector(".commentresponse"), true)
         commentFForm.remove();
+        button.style.visibility="visible"
     });
     //here i must make the post of comment(postComment) and then delete the form
 }
 
-function postComment(form, cardresponse) {
+function postComment(form, cardresponse, hasparent) {
     var commentobject = "";
     //get element like in the css
     var CommentValue = form.querySelector("textarea[name=Comment]").value
@@ -157,25 +135,27 @@ function postComment(form, cardresponse) {
         return;
     }
     var articlename = document.getElementsByTagName("title")[0].innerText
+    var parent = null;
+    if (hasparent) {
+        parent = form.id;
+    }
     commentobject = {
         Name: NameValue,
         Comment: CommentValue,
         ArticleId: articleID,
         ArticleName: articlename,
-        ParentId: form.id
+        ParentId: parent
     }
     form.querySelector("textarea[name=Comment]").value = "";
     axios.post('https://articlecommentsapi.herokuapp.com/comments', commentobject)
         .then(function (response) {
             console.log(response.data._id, response.data.ParentId, )
-            if (form.id!="commentform") {
+            if (form.id != "commentform") {
                 cardresponse.prepend(createBootstrapCard(response.data._id, response.data.ParentId, NameValue, CommentValue))
 
             } else {
-                console.log("NOParent")
                 commentssection.prepend(createBootstrapCard(response.data._id, response.data.ParentId, NameValue, CommentValue));
             }
-            //console.log(response);
         })
         .catch(function (error) {
             console.log(error);
@@ -185,7 +165,6 @@ function postComment(form, cardresponse) {
 function getComments() {
     // Make a request for a user with a given ID
     commentssection.innerHTML = "";
-    console.log(commentssection)
     axios.get('https://articlecommentsapi.herokuapp.com/comments', {
             params: {
                 ArticleId: articleID
@@ -193,7 +172,6 @@ function getComments() {
         })
         .then(function (response) {
             // handle success
-
             var i;
             for (i = response.data.length - 1; i >= 0; i--) {
                 if (alreadyloadedcomments.length == 0) {
@@ -208,6 +186,7 @@ function getComments() {
                         }
                     }
                     if (!found) {
+                        
                         commentssection.appendChild(createBootstrapCard(response.data[i]._id, response.data[i].ParentId, response.data[i].Name, response.data[i].Comment));
                         alreadyloadedcomments.push(response.data[i]._id)
                     }
@@ -222,20 +201,19 @@ function getComments() {
         .then(function () {
             // always executed
             for (i = commentssection.children.length - 1; i >= 0; i--) {
-                var child=commentssection.children[i];
-               var parentof=document.getElementById(child.querySelector("[title=ParentId]").innerHTML)
-               console.log(child)
-                if(parentof){
-                    parentcard=parentof.parentElement;
-                    if(parentcard){
-                        containerofcard=parentcard.parentElement;
-                        if(containerofcard){
-                           containerofcard.querySelector("[class=commentresponse]").prepend(child)
+                var child = commentssection.children[i];
+                var parentof = document.getElementById(child.querySelector("[title=ParentId]").innerHTML)
+                if (parentof) {
+                    parentcard = parentof.parentElement;
+                    if (parentcard) {
+                        containerofcard = parentcard.parentElement;
+                        if (containerofcard) {
+                            containerofcard.querySelector("[class=commentresponse]").prepend(child)
                         }
                     }
                 }
 
-                
+
             }
         });
 }
