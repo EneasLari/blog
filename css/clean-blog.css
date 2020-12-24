@@ -456,3 +456,12 @@ footer .copyright {
   margin-top: 10px;
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+
+.dropdown-menu {
+  background-color: rgb(255, 255, 255);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-color: #ffffff00;
+}
