@@ -1,26 +1,43 @@
-var articlescontainer=document.getElementById("dynamiccontent")
+var articlescontainer = document.getElementById("dynamiccontent")
 getArticles();
 
-
+const months = {
+    0: 'January',
+    1: 'February',
+    2: 'March',
+    3: 'April',
+    4: 'May',
+    5: 'June',
+    6: 'July',
+    7: 'August',
+    8: 'September',
+    9: 'October',
+    10: 'November',
+    11: 'December'
+}
 
 function getArticles() {
     // Make a request for a user with a given ID
     articlescontainer.innerHTML = "";
     axios.get('https://articlecommentsapi.herokuapp.com/articles', {
-            // params: {
-            //     ArticleId: articleID
-            // }
-        })
+        // params: {
+        //     ArticleId: articleID
+        // }
+    })
         .then(function (response) {
-            
+
             // handle success
             var i;
-            var articlepreview='';
+            var articlepreview = '';
             for (i = response.data.length - 1; i >= 0; i--) {
-                articlepreview=articlepreview+'<div class="row"><div class="col-lg-8 col-md-10 mx-auto"><div class="post-preview"><a href="posts/post5.html"><h2 class="post-title">'+response.data[i].Title+'</h2><h3 class="post-subtitle">'+response.data[i].Description+'</h3></a> <p class="post-meta">Posted by<a href="https://twitter.com/EneasLari">Eneas Lari</a>on '+response.data[i].DatePosted+'</p></div><hr></div></div>';
+                const monthIndex = response.data[i].DatePosted.getMonth()
+                const monthName = months[monthIndex]
+                dateformated=monthName +' '+response.data[i].DatePosted.getDay()+', '+response.data[i].DatePosted.getYear();
+                console.log(monthName)
+                articlepreview = articlepreview + '<div class="row"><div class="col-lg-8 col-md-10 mx-auto"><div class="post-preview"><a href="posts/post5.html"><h2 class="post-title">' + response.data[i].Title + '</h2><h3 class="post-subtitle">' + response.data[i].Description + '</h3></a> <p class="post-meta">Posted by <a href="https://twitter.com/EneasLari">Eneas Lari</a> on ' + dateformated + ' </p></div><hr></div></div>';
                 console.log(response.data[i])
             }
-            articlescontainer.innerHTML=articlepreview;
+            articlescontainer.innerHTML = articlepreview;
         })
         .catch(function (error) {
             // handle error
