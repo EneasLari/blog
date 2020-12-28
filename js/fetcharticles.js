@@ -31,6 +31,7 @@ function getArticles() {
             var articlepreview = '';
             for (i = response.data.length - 1; i >= 0; i--) {
                 const monthIndex = response.data[i].DatePosted.getMonth()
+                console.log(response.data[i].DatePosted)
                 const monthName = months[monthIndex]
                 dateformated=monthName +' '+response.data[i].DatePosted.getDay()+', '+response.data[i].DatePosted.getYear();
                 console.log(monthName)
