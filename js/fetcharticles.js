@@ -10,7 +10,7 @@ function getArticles() {
             // }
         })
         .then(function (response) {
-            articlescontainer.innerHTML.response.data;
+            articlescontainer.innerHTML=response.data;
             // handle success
             var i;
             for (i = response.data.length - 1; i >= 0; i--) {
