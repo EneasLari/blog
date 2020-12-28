@@ -1,9 +1,9 @@
 var titlesection = document.getElementById("postTitle")
+var pagetitle=document.getElementById("pagetitle")
 var descriptionsection = document.getElementById("postDescription")
 var bodysection = document.getElementById("postBody")
 var id = document.getElementById("ArticleId")
 const queryString = window.location.search;
-console.log(queryString);
 const urlParams = new URLSearchParams(queryString);
 id.innerHTML=urlParams.get('id')
 
@@ -28,6 +28,7 @@ function getPost() {
             // handle success
             console.log(response.data);
             titlesection.innerHTML = response.data.Title;
+            pagetitle.innerHTML=response.data.Title;
             descriptionsection.innerHTML = response.data.Description;
             bodysection.innerHTML = response.data.Body;
 
