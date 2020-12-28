@@ -2,6 +2,8 @@ var titlesection = document.getElementById("postTitle")
 var descriptionsection = document.getElementById("postDescription")
 var bodysection = document.getElementById("postBody")
 var id = document.getElementById("ArticleId")
+const queryString = window.location.search;
+console.log(queryString);
 
 console.log(titlesection);
 console.log(descriptionsection);
