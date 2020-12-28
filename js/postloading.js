@@ -4,6 +4,8 @@ var bodysection = document.getElementById("postBody")
 var id = document.getElementById("ArticleId")
 const queryString = window.location.search;
 console.log(queryString);
+const urlParams = new URLSearchParams(queryString);
+id.innerHTML=urlParams.get('id')
 
 console.log(titlesection);
 console.log(descriptionsection);
