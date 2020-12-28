@@ -3,7 +3,7 @@ getArticles();
 
 function getArticles() {
     // Make a request for a user with a given ID
-    commentssection.innerHTML = "";
+    articlescontainer.innerHTML = "";
     axios.get('https://articlecommentsapi.herokuapp.com/articles', {
             // params: {
             //     ArticleId: articleID
