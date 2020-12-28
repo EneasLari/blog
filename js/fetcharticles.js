@@ -1,4 +1,6 @@
 var articlescontainer = document.getElementById("dynamiccontent")
+// Simulate a mouse click:
+window.location.href = "./posts/post5.html";
 getArticles();
 
 const months = {
