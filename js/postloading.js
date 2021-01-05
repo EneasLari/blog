@@ -9,9 +9,9 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 id.innerHTML=urlParams.get('id')
 
-window.onload = function () {
+window.addEventListener("load",function () {
     getPost();
-}
+})
 
 const months = {
     0: 'January',

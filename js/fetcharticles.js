@@ -34,12 +34,9 @@ function getArticles() {
             for (i = response.data.length - 1; i >= 0; i--) {
                 var datefromstr=new Date(response.data[i].DatePosted)
                 var monthIndex = datefromstr.getMonth()
-                console.log(datefromstr)
                 var monthName = months[monthIndex]
                 dateformated=monthName +' '+datefromstr.getDate()+', '+datefromstr.getFullYear();
-                console.log(monthName)
-                articlepreview = articlepreview + '<div class="row"><div class="col-lg-8 col-md-10 mx-auto"><div class="post-preview"><a href="posts/postTemplate.html?id='+response.data[i]._id+'"><h2 class="post-title">' + response.data[i].Title + '</h2><h3 class="post-subtitle">' + response.data[i].Description + '</h3></a> <p class="post-meta">Posted by <a href="https://twitter.com/EneasLari">Eneas Lari</a> on ' + dateformated + ' </p></div><hr></div></div>';
-                console.log(response.data[i])
+                articlepreview = articlepreview + '<div class="row"><div class="col-lg-8 col-md-10 mx-auto"><div class="post-preview"><a href="posts/post.html?id='+response.data[i]._id+'"><h2 class="post-title">' + response.data[i].Title + '</h2><h3 class="post-subtitle">' + response.data[i].Description + '</h3></a> <p class="post-meta">Posted by <a href="https://twitter.com/EneasLari">Eneas Lari</a> on ' + dateformated + ' </p></div><hr></div></div>';
             }
             articlescontainer.innerHTML = articlepreview;
         })
