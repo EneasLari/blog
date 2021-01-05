@@ -38,7 +38,6 @@ function getPost() {
     })
         .then(function (response) {
             // handle success
-            console.log(response.data);
             titlesection.innerHTML = response.data.Title;
             pagetitle.innerHTML=response.data.Title;
             descriptionsection.innerHTML = response.data.Description;

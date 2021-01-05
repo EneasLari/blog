@@ -4,7 +4,7 @@ var alreadyloadedcomments = [];
 
 var articleID = document.getElementById("ArticleId").innerHTML.trim();
 
-window.onload = function () {
+window.addEventListener("load", function () {
     axios.get('commentsectionrow.html')
         .then(function (response) {
             var doc = new DOMParser().parseFromString(response.data, 'text/html');
@@ -18,7 +18,7 @@ window.onload = function () {
         .then(function () {
             Initialize();
         });
-}
+})
 
 
 function Initialize() {
