@@ -52,6 +52,3 @@ function getArticles() {
 
         });
 }
-
-
-console.log(articlescontainer)
